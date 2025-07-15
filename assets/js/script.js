@@ -597,10 +597,8 @@ function updateCartCount() {
 // CHECKOUT FORM HANDLING
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Initialize EmailJS SDK v4
-  emailjs.init({
-    publicKey: "qgF8w_fhbbtzEgOsy",
-  });
+  
+ 
 
   const checkoutForm = document.getElementById("checkout-form");
   if (checkoutForm) {
@@ -644,7 +642,7 @@ const orderDetailsHtml = cart.map(item =>
 
 
       // ✅ Send email with flat parameters
-      emailjs.send("service_iyoohre", "template_xoqnwhr", {
+      emailjs.send("service_xxx", "template_xxx", {
         customer_name: name,
         customer_email: email,
         customer_phone: phone,
