@@ -597,7 +597,11 @@
 
     </nav>
 
+
+
   </header>
+
+  
 
 
 
@@ -624,59 +628,124 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-    <!-- Product Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__pic__item">
-                            <img id="product-image" class="product__details__pic__item--large" src="" alt="" height="100%" width="100%">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__text">
-                      <h3 id="product-name"></h3>
-                      <div class="product__details__price" id="product-price"></div>
-                      <p id="product-description"></p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Add to Cart Button -->
-                          <div id="add-to-cart-container"></div>
-                           <button id="add-to-cart-btn" class="add-cart-btn">Add to Cart</button>
-                          <span id="cart-count">0</span>
-
-
-
-<!-- Optional: Wishlist Icon -->
-<a href="#" class="heart-icon">
-  <span class="icon_heart_alt"></span>
-</a>
-
-<!-- Product Details List -->
-<ul>
-  <li><b>Availability</b> <span>In Stock</span></li>
-  <li><span><samp>Free pickup today</samp></span></li>
-  <li><b>Weight</b> <span>100g per Pack</span></li>
-  <li><b>Share on</b>
-    <div class="share">
-      <a href="#"><i class="fa fa-facebook"></i></a>
-      <a href="#"><i class="fa fa-twitter"></i></a>
-      <a href="#"><i class="fa fa-instagram"></i></a>
-      <a href="#"><i class="fa fa-pinterest"></i></a>
+    <!-- Product Container with Sidebar + Product Details -->
+<div class="product-container">
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar has-scrollbar" data-mobile-menu>
+      <div class="sidebar-category">
+        <div class="sidebar-top">
+          <h2 class="sidebar-title">Category</h2>
+          <button class="sidebar-close-btn" data-mobile-menu-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+        <ul class="sidebar-menu-category-list">
+          <li class="sidebar-menu-category"><a href="category.html?category=rice" class="menu-title"><p class="menu-title">Rice</p></a></li>
+          <li class="sidebar-menu-category">
+            <button class="sidebar-accordion-menu" data-accordion-btn>
+              <div class="menu-title-flex"><p class="menu-title">Ambient Products</p></div>
+              <div><ion-icon name="add-outline" class="add-icon"></ion-icon><ion-icon name="remove-outline" class="remove-icon"></ion-icon></div>
+            </button>
+            <ul class="sidebar-submenu-category-list" data-accordion>
+              <li><a href="product.html?product=Exotic Bites Gulab Jamun 1Ltr" class="sidebar-submenu-title"><p class="product-name">Gulab Jamun</p></a></li>
+              <li><a href="product.html?product=Exotic Bites Rasgulla 1Ltr" class="sidebar-submenu-title"><p class="product-name">Rasgulla</p></a></li>
+              <li><a href="product.html?product=Exotic Bites Pure Ghee 1Ltr" class="sidebar-submenu-title"><p class="product-name">Ghee</p></a></li>
+              <li><a href="product.html?product=Exotic Bites Kesar Mango Pulp 850G" class="sidebar-submenu-title"><p class="product-name">Kesar Mango Pulp</p></a></li>
+              <li><a href="product.html?product=Exotic Bites Coconut Milk 400Ml" class="sidebar-submenu-title"><p class="product-name">Coconut Milk</p></a></li>
+            </ul>
+          </li>
+          <li class="sidebar-menu-category">
+            <button class="sidebar-accordion-menu" data-accordion-btn>
+              <div class="menu-title-flex"><p class="menu-title">Frozen</p></div>
+              <div><ion-icon name="add-outline" class="add-icon"></ion-icon><ion-icon name="remove-outline" class="remove-icon"></ion-icon></div>
+            </button>
+            <ul class="sidebar-submenu-category-list" data-accordion>
+              <li><a href="category.html?category=Frozen samosa" class="sidebar-submenu-title"><p class="product-name">Samosas</p></a></li>
+              <li><a href="category.html?category=Frozen sweets" class="sidebar-submenu-title"><p class="product-name">Sweets</p></a></li>
+              <li><a href="category.html?category=Frozen lassi" class="sidebar-submenu-title"><p class="product-name">Lassi</p></a></li>
+              <li><a href="category.html?category=Frozen paneer" class="sidebar-submenu-title"><p class="product-name">Paneer</p></a></li>
+              <li><a href="category.html?category=Frozen ice cream" class="sidebar-submenu-title"><p class="product-name">Ice Cream</p></a></li>
+            </ul>
+          </li>
+          <li class="sidebar-menu-category">
+            <button class="sidebar-accordion-menu" data-accordion-btn>
+              <div class="menu-title-flex"><p class="menu-title">Spices</p></div>
+              <div><ion-icon name="add-outline" class="add-icon"></ion-icon><ion-icon name="remove-outline" class="remove-icon"></ion-icon></div>
+            </button>
+            <ul class="sidebar-submenu-category-list" data-accordion>
+              <li><a href="category.html?category=Spices (Retail Packs)" class="sidebar-submenu-title"><p class="product-name">Boxed Spices</p></a></li>
+              <li><a href="category.html?category=Powder Spices" class="sidebar-submenu-title"><p class="product-name">Powder Spices</p></a></li>
+              <li><a href="category.html?category=Whole Spices" class="sidebar-submenu-title"><p class="product-name">Whole Spices</p></a></li>
+            </ul>
+          </li>
+          <li class="sidebar-menu-category"><a href="category.html?category=pulses" class="menu-title"><p class="menu-title">Pulses</p></a></li>
+          <li class="sidebar-menu-category">
+            <button class="sidebar-accordion-menu" data-accordion-btn>
+              <div class="menu-title-flex"><p class="menu-title">Carbonated Drinks</p></div>
+              <div><ion-icon name="add-outline" class="add-icon"></ion-icon><ion-icon name="remove-outline" class="remove-icon"></ion-icon></div>
+            </button>
+            <ul class="sidebar-submenu-category-list" data-accordion>
+              <li><a href="product.html?product=Sosyo power Up 250ml Can" class="sidebar-submenu-title"><p class="product-name">Power Up</p></a></li>
+              <li><a href="product.html?product=Sosyo Lemee 250ml Can" class="sidebar-submenu-title"><p class="product-name">Lemee</p></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="product-showcase best-sellers-section" id="best-sellers-container">
+        <h3 class="showcase-heading">Best Sellers</h3>
+        <div class="showcase-list" id="best-sellers-list"></div>
+      </div>
     </div>
-  </li>
-</ul>
 
-                        </ul>
-                    </div>
+    <!-- Product Details -->
+    <div class="product-box">
+      <section class="product-details spad">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="product__details__pic">
+                <div class="product__details__pic__item">
+                  <img id="product-image" class="product__details__pic__item--large" src="" alt="">
                 </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="product__details__text">
+                <h3 id="product-name"></h3>
+                <div class="product__details__price" id="product-price"></div>
+                <p id="product-description"></p>
+                <div class="product__details__quantity">
+                  <div class="quantity">
+                    <div class="pro-qty">
+                      <input type="text" value="1">
+                    </div>
+                  </div>
+                </div>
+                <button id="add-to-cart-btn" class="add-cart-btn">Add to Cart</button>
+                <span id="cart-count">0</span>
+                <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                <ul>
+                  <li><b>Availability</b> <span>In Stock</span></li>
+                  <li><span><samp>Free pickup today</samp></span></li>
+                  <li><b>Weight</b> <span>100g per Pack</span></li>
+                  <li><b>Share on</b>
+                    <div class="share">
+                      <a href="#"><i class="fa fa-facebook"></i></a>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                      <a href="#"><i class="fa fa-instagram"></i></a>
+                      <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
 
                <!-- <div class="col-lg-12">
                     <div class="product__details__tab">
