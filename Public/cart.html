@@ -559,6 +559,29 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script>
+  document.getElementById("next-button").addEventListener("click", function () {
+    // This assumes your cart items are already in a variable called cartItems
+    // If not, replace this with your actual cart data collection logic
+    const cartRows = document.querySelectorAll(".cart-row"); // adjust if needed
+    const cart = [];
+
+    cartRows.forEach(row => {
+      const name = row.querySelector(".cart-item-name")?.innerText;
+      const price = parseFloat(row.querySelector(".cart-item-price")?.innerText?.replace("$", "") || 0);
+      const quantity = parseInt(row.querySelector(".cart-item-quantity")?.value || 1);
+
+      if (name && price) {
+        cart.push({ name, price, quantity });
+      }
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "checkout.html";
+  });
+</script>
+
+
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 {
-  "name": "hoi",
-  "version": "1.0.0",
+  "name": "square",
+  "version": "40.0.0",
   "description": "house of india pa is a fully responsive ecommerce website, maximum compatiblities in all mobile devices, built using HTML, CSS, and JavaScript.",
   "main": "index.js",
   "scripts": {
@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
-    "square": "^43.0.0"
+    "nodemailer": "^7.0.5",
+    "pdfkit": "^0.17.1",
+    "square": "^43.0.1"
   }
 }
