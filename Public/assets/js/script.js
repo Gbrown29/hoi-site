@@ -558,26 +558,43 @@ function setupAddToCart() {
       const desc = document.getElementById("product-description");
       if (desc) desc.textContent = product.DESCRIPTION;
 
+      const weightEl = document.getElementById("product-weight");
+      if (weightEl) {
+        const rawSize = product["PACK SIZE"] || "";
+        const formatted = rawSize
+          .replace(/x/gi, " x ")
+          .replace(/lb/gi, " lb")
+          .replace(/packs/gi, " packs")
+          .replace(/pcs/gi, " pcs");
+        weightEl.textContent = formatted;
+      }
+
+
       // Attach click handler to Add to Cart
       const addBtn = document.getElementById("add-to-cart-btn");
       if (addBtn) {
-        addBtn.addEventListener("click", () => {
-          const name = product.PRODUCT;
-          const price = parseFloat(product["SELLING PRICE"]);
+  addBtn.addEventListener("click", () => {
+    const name = product.PRODUCT;
+    const price = parseFloat(product["SELLING PRICE"]);
 
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          const existing = cart.find(item => item.name === name);
-          if (existing) {
-            existing.quantity += 1;
-          } else {
-            cart.push({ name, price, quantity: 1 });
-          }
+    // ✅ Get quantity from the input field
+    const qtyInput = document.querySelector(".product-qty") || document.querySelector(".pro-qty input");
+    const quantity = parseInt(qtyInput?.value) || 1;
 
-          localStorage.setItem("cart", JSON.stringify(cart));
-          updateCartCount();
-          alert(`${name} added to cart!`);
-        });
-      }
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      existing.quantity += quantity; // ✅ Add chosen quantity
+    } else {
+      cart.push({ name, price, quantity });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    alert(`${quantity} x ${name} added to cart!`);
+  });
+}
+
     })
     .catch(err => console.error("Error loading product data:", err));
 }
@@ -670,6 +687,76 @@ fetch("/api/create-order", {
     });
   }
 });
+
+// =================== LIVE SEARCH FUNCTIONALITY ===================
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.querySelector(".search-field");
+  const searchButton = document.querySelector(".search-btn");
+  const resultsContainer = document.getElementById("search-results");
+
+  let productsData = [];
+
+  // Load products JSON for search
+  fetch("products_data.json")
+    .then(res => res.json())
+    .then(data => {
+      productsData = data;
+      console.log("Products ready for search:", productsData.length);
+    });
+
+  function showResults(query) {
+    resultsContainer.innerHTML = "";
+    if (!query) {
+      resultsContainer.style.display = "none";
+      return;
+    }
+
+    const results = productsData.filter(p =>
+      p.PRODUCT.toLowerCase().includes(query) ||
+      (p.DESCRIPTION && p.DESCRIPTION.toLowerCase().includes(query))
+    );
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML = `<div class="result-item">No products found.</div>`;
+      resultsContainer.style.display = "block";
+      return;
+    }
+
+   results.forEach(product => {
+  const folder = product.CATEGORY || "default"; // use your category field
+  const imagePath = `./assets/images/${folder}/${encodeURIComponent(product.PRODUCT)}.png`;
+
+  const div = document.createElement("div");
+  div.classList.add("result-item");
+  div.innerHTML = `
+    <img src="${imagePath}" alt="${product.PRODUCT}">
+    <span>${product.PRODUCT}</span>
+  `;
+  
+  div.addEventListener("click", () => {
+    window.location.href = `product.html?product=${encodeURIComponent(product.PRODUCT)}`;
+  });
+
+  resultsContainer.appendChild(div);
+});
+
+    resultsContainer.style.display = "block";
+  }
+
+  // Search on typing (live search)
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase().trim();
+    showResults(query);
+  });
+
+  // Search on button click
+  searchButton.addEventListener("click", () => {
+    const query = searchInput.value.toLowerCase().trim();
+    showResults(query);
+  });
+});
+
+
 
 
 
