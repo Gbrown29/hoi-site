@@ -86,7 +86,7 @@ const emailHtml = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
   <!-- Header -->
   <div style="background-color: #f8f8f8; padding: 20px; text-align: center;">
-    <img src="https://hoi-site.onrender.com/public/assets/images/logo/black%20logo.png" alt="House of India Logo" style="max-width: 200px;">
+    <img src="https://hoi-site.onrender.com/assets/images/logo/black%20logo.png" alt="House of India Logo" style="max-width: 200px;">
     <h2 style="margin: 10px 0;">Order Receipt</h2>
     <p style="margin: 0; font-size: 14px;">Order Number: <strong>${orderNumber}</strong></p>
   </div>
@@ -130,7 +130,7 @@ const emailHtml = `
           item => `
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-            <img src="${item.image || './assets/images/${item.category}/${item.name}.png/'}" alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
+            <img src="${item.image || 'https://hoi-site.onrender.com/assets/images/${item.category}/${item.name}.png/'}" alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
           </td>
           <td style="padding: 10px; border: 1px solid #ddd;">${item.name}</td>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
