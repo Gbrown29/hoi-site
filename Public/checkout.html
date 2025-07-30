@@ -544,7 +544,7 @@ document.getElementById("checkout-form").addEventListener("submit", async functi
   // ✅ Attach image URLs to each cart item
   const cart = rawCart.map(item => {
     // Build a default image path if your product image folder is organized by product name
-    const defaultImage = `https://hoipa.com/assets/images/${encodeURIComponent(item.name)}.png`;
+    const defaultImage = `https://hoipa.com/public/assets/images/${encodeURIComponent(item.name)}.png`;
 
     return {
       ...item,
