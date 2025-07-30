@@ -1,0 +1,54 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 40px;
+  color: #111;
+}
+
+.invoice-container {
+  border: 4px solid #111;
+  padding: 30px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.logo img {
+  width: 100px;
+}
+
+.logo h1 {
+  font-size: 36px;
+  margin-top: 10px;
+  color: #000;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+table thead {
+  background: #000;
+  color: white;
+}
+
+table th, table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.summary {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.footer {
+  margin-top: 40px;
+  font-size: 14px;
+}
