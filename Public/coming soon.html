@@ -3,12 +3,839 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>This page is underdevlopment</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House of India PA Wholesale  </title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./assets/images/logo/black logo.png" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style-prefix.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+    <style>
+
+    /* Search Results Dropdown */
+
+    .search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+  display: none;
+}
+
+.search-results .result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;           /* Always black by default */
+}
+
+.search-results .result-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.search-results .result-item:hover {
+  background: #f5f5f5;
+}
+
+.search-results .result-item:hover span {
+  color: black; /* Keep text black even on hover */
+}
+
+
+/* header */
+
+.header-flex {
+  display: flex;
+  align-items: center; /* Vertically center logo, search, and icons */
+  justify-content: space-between; /* Spread out sections */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 20px; /* Space between logo, search, and icons */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between two logos */
+}
+
+.header-search-container {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user-actions .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 24px;
+}
+
+.header-user-actions .count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+/* ---------------------- */
+/* RESPONSIVE MOBILE FIX  */
+/* ---------------------- */
+@media (max-width: 768px) {
+  /* Stack header sections */
+  .header-flex {
+    flex-wrap: wrap; /* Allow multi-line */
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-logo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-logo img {
+    max-width: 80px;
+    height: auto;
+  }
+
+  .header-search-container {
+    width: 80%;
+    margin: 10px auto;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .header-user-actions {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  /* Hide desktop menu on phones */
+  .desktop-navigation-menu {
+    display: none;
+  }
+}
+
+
+</style>
+
 </head>
 <body>
+   <!--
+    - HEADER
+  -->
 
-   <h1>This page is underdevlopment</h1>
-  <h3>sorry for the inconvenience</h3>
+  <header>
+
+    <div class="header-top">
+
+      <div class="container">
+
+        <ul class="header-social-container">
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+        <div class="header-alert-news">
+          <p>
+            <b>Welcome</b>
+          </p>
+        </div>
+
+        <div class="header-top-actions">
+
+          <select name="currency">
+
+            <option value="usd">USD &dollar;</option>
+            <option value="eur">EUR &euro;</option>
+
+          </select>
+
+          <select name="language">
+
+            <option value="en-US">English</option>
+            <option value="es-ES">Espa&ntilde;ol</option>
+            <option value="fr">Fran&ccedil;ais</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="header-main">
+
+      <div class="container header-flex">
+
+        
+        <a href="index.html" class="header-logo">
+          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80">
+           <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
+        </a>
+
+     
+        <a class="header-search-container">
+
+          <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
+          <button class="search-btn">
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+
+          <!-- Search results will appear here -->
+          <div id="search-results" class="search-results"></div>
+
+        </a>
+
+        <div class="header-user-actions">
+
+          <a href="coming soon.html" class="action-btn">
+            <ion-icon name="person-outline"></ion-icon>
+          </a>
+
+          <a href="coming soon.html"  class="action-btn">
+            <ion-icon name="heart-outline"></ion-icon>
+            <span class="count">0</span>
+          </a>
+
+          <a href="cart.html" class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+             <span class="count" id="cart-count">0</span>
+          </a>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <nav class="desktop-navigation-menu">
+
+      <div class="container">
+
+        <ul class="desktop-menu-category-list">
+
+          <li class="menu-category">
+            <a href="index.html" class="menu-title">Home</a>
+          </li>
+
+          
+
+
+          <li class="menu-category">
+            <a href="category.html?category=rice" class="menu-title">Rice</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="category.html?category=Ambient Product" class="menu-title">Ambient Products</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Exotic Bites Gulab Jamun 1Ltr">Gulab Jamun</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Exotic Bites Rasgulla 1Ltr">Rasgulla</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Exotic Bites Pure Ghee 1Ltr">Ghee</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Exotic Bites Kesar Mango Pulp 850G">Kesar Mango Pulp</a>
+              </li>
+
+               <li class="dropdown-item">
+                <a href="product.html?product=Exotic Bites Coconut Milk 400Ml">Coconut Milk</a>
+              </li>
+              
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="category.html?category=Frozen" class="menu-title">Frozen</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="category.html?category=Frozen samosa">Samosas</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="category.html?category=Frozen sweets">Sweets</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="category.html?category=Frozen lassi">Lassi</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="category.html?category=Frozen paneer">Paneer</a>
+              </li>
+
+               <li class="dropdown-item">
+                <a href="category.html?category=Frozen ice cream">Ice Cream</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="category.html?category=Spices" class="menu-title">Spices</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="category.html?category=Spices (Retail Packs)">Boxed</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Powder</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="#">Whole</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="category.html?category=pulses" class="menu-title">Pulses</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="category.html?category=carbonated drinks" class="menu-title">Carbonated Drinks</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Sosyo power Up 250ml Can">Power Up</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="product.html?product=Sosyo Lemee 250ml Can">Lemme</a>
+              </li>
+
+              
+
+            
+
+            </ul>
+          </li>
+
+
+        </ul>
+
+      </div>
+
+    </nav>
+
+    <div class="mobile-bottom-navigation">
+
+      <button class="action-btn" data-mobile-menu-open-btn>
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <a href="cart.html" class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+             <span class="count" id="cart-count">0</span>
+          </a>
+
+       <a href="index.html" class="action-btn">
+            <ion-icon name="home-outline"></ion-icon>
+          </a> 
+
+      <button class="action-btn">
+        <ion-icon name="heart-outline"></ion-icon>
+
+        <span class="count">0</span>
+      </button>
+
+      <button class="action-btn" data-mobile-menu-open-btn>
+        <ion-icon name="grid-outline"></ion-icon>
+      </button>
+
+    </div>
+
+    <nav class="mobile-navigation-menu  has-scrollbar" data-mobile-menu>
+
+      <div class="menu-top">
+        <h2 class="menu-title">Menu</h2>
+
+        <button class="menu-close-btn" data-mobile-menu-close-btn>
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <ul class="mobile-menu-category-list">
+
+        <li class="menu-category">
+          <a href="index.html" class="menu-title">Home</a>
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Rice</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Rice" class="submenu-title">House of India PA</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Rice" class="submenu-title">Exotic Bites</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Frozen</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Frozen samosa" class="submenu-title">Samosas</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Frozen sweets" class="submenu-title">Sweets</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Frozen lassi" class="submenu-title">Lassi</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Frozen paneer" class="submenu-title">Ice Cream</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Spices</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="category.html?category=Spices (Retail Packs)" class="submenu-title">Retail Spices</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Powder</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Whole</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Perfume</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Clothes Perfume</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Deodorant</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Flower Fragrance</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Air Freshener</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+
+      </ul>
+
+      <div class="menu-bottom">
+
+        <ul class="menu-category-list">
+
+          <li class="menu-category">
+
+            <button class="accordion-menu" data-accordion-btn>
+              <p class="menu-title">Language</p>
+
+              <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+            </button>
+
+            <ul class="submenu-category-list" data-accordion>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">English</a>
+              </li>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">Espa&ntilde;ol</a>
+              </li>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">Fren&ccedil;h</a>
+              </li>
+
+            </ul>
+
+          </li>
+
+          <li class="menu-category">
+            <button class="accordion-menu" data-accordion-btn>
+              <p class="menu-title">Currency</p>
+              <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+            </button>
+
+            <ul class="submenu-category-list" data-accordion>
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">USD &dollar;</a>
+              </li>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">EUR &euro;</a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+
+        <ul class="menu-social-container">
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </nav>
+
+  </header>
+  <main class="container">
+
+    <div class="coming-soon-container">
+
+      <h1 class="coming-soon-title">Coming Soon</h1>
+      <p class="coming-soon-text">This page is currently under development. Please check back later.</p>
+
+      <a href="index.html" class="btn">Go to Home</a>
+
+    </div>
+
+  </main>
+
+
+  <!--
+    - FOOTER
+  -->
+
+  <footer>
+
+    <div class="footer-nav">
+
+      <div class="container">
+
+
+        <ul class="footer-nav-list">
+        
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Products</h2>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="category.html?category=Rice" class="footer-nav-link">Rice</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="category.html?category=Ambient Product" class="footer-nav-link">Ambient Products</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="category.html?category=Frozen" class="footer-nav-link">Frozen</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="category.html?category=Spices" class="footer-nav-link">Spices</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="category.html?category=Pulses" class="footer-nav-link">Pulses</a>
+          </li>
+        
+        </ul>
+
+        <ul class="footer-nav-list">
+        
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Our Company</h2>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Delivery</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Legal Notice</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Terms and conditions</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">About us</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Secure payment</a>
+          </li>
+        
+        </ul>
+
+        <ul class="footer-nav-list">
+
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Contact</h2>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <address class="content">
+              121 Market st
+              Collegeville, Pennsylvania(PA), 19426, USA
+            </address>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="call-outline"></ion-icon>
+            </div>
+
+            <a href="tel:+16108003227" class="footer-nav-link">(610) 800-3227</a>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <a href="mailto:info@hoipa.com" class="footer-nav-link">Info@Hoipa.com</a>
+          </li>
+
+        </ul>
+
+        <ul class="footer-nav-list">
+
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Follow Us</h2>
+          </li>
+
+          <li>
+            <ul class="social-link">
+
+              <li class="footer-nav-item">
+                <a href="#" class="footer-nav-link">
+                  <ion-icon name="logo-facebook"></ion-icon>
+                </a>
+              </li>
+
+              <li class="footer-nav-item">
+                <a href="#" class="footer-nav-link">
+                  <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+              </li>
+
+              <li class="footer-nav-item">
+                <a href="#" class="footer-nav-link">
+                  <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+              </li>
+
+              <li class="footer-nav-item">
+                <a href="#" class="footer-nav-link">
+                  <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      <div class="container">
+
+        <img src="./assets/images/payment.png" alt="payment method" class="payment-img">
+
+        <p class="copyright">
+          Copyright &copy; <a href="#">Kartik Gualti</a> all rights reserved.
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
 </body>
 </html>
 
