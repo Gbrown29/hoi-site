@@ -31,44 +31,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Create invoice PDF
-function generateInvoicePDF({ orderNumber, name, email, phone, address, cart }) {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument();
-    const filename = `invoice-${orderNumber}.pdf`;
-    const filepath = path.join(__dirname, filename);
-    const stream = fs.createWriteStream(filepath);
-
-    doc.pipe(stream);
-
-    // Logo
-    const logoPath = path.join(__dirname, "assets", "logo.png");
-    if (fs.existsSync(logoPath)) {
-      doc.image(logoPath, 50, 50, { width: 100 });
-    }
-
-    doc.fontSize(18).text("House of India PA", 50, 160);
-    doc.fontSize(12).text(`Order #: ${orderNumber}`);
-    doc.text(`Name: ${name}`);
-    doc.text(`Email: ${email}`);
-    doc.text(`Phone: ${phone}`);
-    doc.text(`Address: ${address}`);
-    doc.moveDown();
-
-    doc.fontSize(14).text("Order Details:");
-    cart.forEach((item, i) => {
-      doc.fontSize(12).text(`${i + 1}. ${item.name} x ${item.quantity} @ $${item.price}`);
-    });
-
-    const total = cart.reduce((sum, item) => sum + item.quantity * parseFloat(item.price), 0);
-    doc.moveDown();
-    doc.fontSize(14).text(`Total: $${total.toFixed(2)}`);
-
-    doc.end();
-    stream.on("finish", () => resolve(filepath));
-    stream.on("error", reject);
-  });
-}
 
 // API endpoint
 app.post("/api/create-order", async (req, res) => {
@@ -130,7 +92,7 @@ const emailHtml = `
           item => `
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-            <img src="${item.image || 'https://hoi-site.onrender.com/assets/images/${item.category}/${item.name}.png/'}" alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
+            <img src='https://hoi-site.onrender.com/assets/images/${item.category}/${item.name}.png/' alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
           </td>
           <td style="padding: 10px; border: 1px solid #ddd;">${item.name}</td>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
@@ -154,13 +116,10 @@ const emailHtml = `
 // Send the email
 await transporter.sendMail({
   from: `"House of India PA" <${process.env.OUTLOOK_EMAIL}>`,
-  to: `${email}, info@hoipa.com, houseofindiapa@gmail.com`,
+  to: `${email}, info@hoipa.com`,
   subject: `Your Order Receipt - ${orderNumber}`,
   html: emailHtml
 });
-
-
-    await transporter.sendMail(mailOptions);
 
     res.json({ success: true, orderNumber });
   } catch (error) {

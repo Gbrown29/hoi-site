@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout - House of India PA Wholesale</title>
   <link rel="shortcut icon" href="./assets/images/logo/black logo.png" type="image/x-icon">
@@ -10,13 +11,105 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: Arial, sans-serif; padding:20px; max-width:700px; margin:0 auto; }
+    body { font-family: Arial, sans-serif;}
+    main{ padding:20px; max-width:700px; margin:0 auto; }
     input, textarea { width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:4px; }
     button { padding:10px 20px; background:#28a745; color:white; border:none; cursor:pointer; border-radius:4px; }
     form { margin-top:2rem; }
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+  /* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+  display: none;
+}
+
+.search-results .result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;           /* Always black by default */
+}
+
+.search-results .result-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.search-results .result-item:hover {
+  background: #f5f5f5;
+}
+
+.search-results .result-item:hover span {
+  color: black; /* Keep text black even on hover */
+}
+
+
+/* header */
+
+.header-flex {
+  display: flex;
+  align-items: center; /* Vertically center logo, search, and icons */
+  justify-content: space-between; /* Spread out sections */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 20px; /* Space between logo, search, and icons */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between two logos */
+}
+
+.header-search-container {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user-actions .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 24px;
+}
+
+.header-user-actions .count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+
+</style>
 
 
 
@@ -24,6 +117,10 @@
 <body>
 
   <!-- Header Starts Here -->
+   <!--
+    - HEADER
+  -->
+
   <header>
 
     <div class="header-top">
@@ -89,32 +186,37 @@
 
     <div class="header-main">
 
-      <div class="container">
+      <div class="container header-flex">
 
+        
         <a href="index.html" class="header-logo">
-          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80"> <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
+          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80">
+           <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
         </a>
 
+     
         <div class="header-search-container">
 
           <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
-
           <button class="search-btn">
             <ion-icon name="search-outline"></ion-icon>
           </button>
+
+          <!-- Search results will appear here -->
+          <div id="search-results" class="search-results"></div>
 
         </div>
 
         <div class="header-user-actions">
 
-          <button class="action-btn">
+          <a href="coming soon.html" class="action-btn">
             <ion-icon name="person-outline"></ion-icon>
-          </button>
+          </a>
 
-          <button class="action-btn">
+          <a href="coming soon.html"  class="action-btn">
             <ion-icon name="heart-outline"></ion-icon>
             <span class="count">0</span>
-          </button>
+          </a>
 
           <a href="cart.html" class="action-btn">
             <ion-icon name="bag-handle-outline"></ion-icon>
@@ -259,15 +361,14 @@
         <ion-icon name="menu-outline"></ion-icon>
       </button>
 
-      <button class="action-btn">
-        <ion-icon name="bag-handle-outline"></ion-icon>
+      <a href="cart.html" class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+             <span class="count" id="cart-count">0</span>
+          </a>
 
-        <span class="count">0</span>
-      </button>
-
-      <button class="action-btn">
-        <ion-icon name="home-outline"></ion-icon>
-      </button>
+       <a href="index.html" class="action-btn">
+            <ion-icon name="home-outline"></ion-icon>
+          </a> 
 
       <button class="action-btn">
         <ion-icon name="heart-outline"></ion-icon>
@@ -294,7 +395,7 @@
       <ul class="mobile-menu-category-list">
 
         <li class="menu-category">
-          <a href="#" class="menu-title">Home</a>
+          <a href="index.html" class="menu-title">Home</a>
         </li>
 
         <li class="menu-category">
@@ -311,11 +412,11 @@
           <ul class="submenu-category-list" data-accordion>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">House of India PA</a>
+              <a href="category.html?category=Rice" class="submenu-title">House of India PA</a>
             </li>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">Exotic Bites</a>
+              <a href="category.html?category=Rice" class="submenu-title">Exotic Bites</a>
             </li>
 
           </ul>
@@ -336,19 +437,19 @@
           <ul class="submenu-category-list" data-accordion>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">Samosas</a>
+              <a href="category.html?category=Frozen samosa" class="submenu-title">Samosas</a>
             </li>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">Sweets</a>
+              <a href="category.html?category=Frozen sweets" class="submenu-title">Sweets</a>
             </li>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">Lasssi</a>
+              <a href="category.html?category=Frozen lassi" class="submenu-title">Lassi</a>
             </li>
 
             <li class="submenu-category">
-              <a href="#" class="submenu-title">Ice Cream</a>
+              <a href="category.html?category=Frozen paneer" class="submenu-title">Ice Cream</a>
             </li>
 
           </ul>
@@ -369,7 +470,7 @@
           <ul class="submenu-category-list" data-accordion>
 
             <li class="submenu-category">
-              <a href="Boxed spices.html" class="submenu-title">Boxed</a>
+              <a href="category.html?category=Spices (Retail Packs)" class="submenu-title">Retail Spices</a>
             </li>
 
             <li class="submenu-category">
@@ -417,13 +518,6 @@
 
         </li>
 
-        <li class="menu-category">
-          <a href="#" class="menu-title">Blog</a>
-        </li>
-
-        <li class="menu-category">
-          <a href="#" class="menu-title">Hot Offers</a>
-        </li>
 
       </ul>
 
@@ -509,6 +603,7 @@
     </nav>
 
   </header>
+
   <!-- Header Ends -->
 
   <main>

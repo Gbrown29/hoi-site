@@ -24,6 +24,99 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+    <style>
+
+    /* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+  display: none;
+}
+
+.search-results .result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;           /* Always black by default */
+}
+
+.search-results .result-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.search-results .result-item:hover {
+  background: #f5f5f5;
+}
+
+.search-results .result-item:hover span {
+  color: black; /* Keep text black even on hover */
+}
+
+
+/* header */
+
+.header-flex {
+  display: flex;
+  align-items: center; /* Vertically center logo, search, and icons */
+  justify-content: space-between; /* Spread out sections */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 20px; /* Space between logo, search, and icons */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between two logos */
+}
+
+.header-search-container {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user-actions .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 24px;
+}
+
+.header-user-actions .count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+
+</style>
 
 </head>
 
@@ -187,32 +280,37 @@
 
     <div class="header-main">
 
-      <div class="container">
+      <div class="container header-flex">
 
+        
         <a href="index.html" class="header-logo">
-          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80"> <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
+          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80">
+           <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
         </a>
 
-        <div class="header-search-container">
+     
+        <a class="header-search-container">
 
           <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
-
           <button class="search-btn">
             <ion-icon name="search-outline"></ion-icon>
           </button>
 
-        </div>
+          <!-- Search results will appear here -->
+          <div id="search-results" class="search-results"></div>
+
+        </a>
 
         <div class="header-user-actions">
 
-          <button class="action-btn">
+          <a href="coming soon.html" class="action-btn">
             <ion-icon name="person-outline"></ion-icon>
-          </button>
+          </a>
 
-          <button class="action-btn">
+          <a href="coming soon.html"  class="action-btn">
             <ion-icon name="heart-outline"></ion-icon>
             <span class="count">0</span>
-          </button>
+          </a>
 
           <a href="cart.html" class="action-btn">
             <ion-icon name="bag-handle-outline"></ion-icon>

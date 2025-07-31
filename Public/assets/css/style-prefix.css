@@ -522,18 +522,15 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   #HEADER
 \*-----------------------------------*/
 
-.header-top,
-.header-user-actions,
-.desktop-navigation-menu { display: none; }
+
 
 .header-main {
   padding: 20px 0;
   border-bottom: 1px solid var(--cultured);
 }
 
-.header-logo { margin-bottom: 20px; }
 
-.header-logo img { margin: auto; }
+
 
 .header-search-container { position: relative; }
 

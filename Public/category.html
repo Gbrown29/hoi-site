@@ -25,6 +25,100 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
 
+       <style>
+
+    /* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+  display: none;
+}
+
+.search-results .result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;           /* Always black by default */
+}
+
+.search-results .result-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.search-results .result-item:hover {
+  background: #f5f5f5;
+}
+
+.search-results .result-item:hover span {
+  color: black; /* Keep text black even on hover */
+}
+
+
+/* header */
+
+.header-flex {
+  display: flex;
+  align-items: center; /* Vertically center logo, search, and icons */
+  justify-content: space-between; /* Spread out sections */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 20px; /* Space between logo, search, and icons */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between two logos */
+}
+
+.header-search-container {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user-actions .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 24px;
+}
+
+.header-user-actions .count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+
+</style>
+
 </head>
 
 <body>
@@ -183,34 +277,39 @@
 
     </div>
 
-    <div class="header-main">
+   <div class="header-main">
 
-      <div class="container">
+      <div class="container header-flex">
 
+        
         <a href="index.html" class="header-logo">
-          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80"> <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
+          <img src="./assets/images/logo/black logo.png" alt="House of India logo" width="120" height="80">
+           <img src="./assets/images/logo/EB LOGO.jpg" alt="Exotic bites logo" width="120" height="80">
         </a>
 
-        <div class="header-search-container">
+     
+        <a class="header-search-container">
 
           <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
-
           <button class="search-btn">
             <ion-icon name="search-outline"></ion-icon>
           </button>
 
-        </div>
+          <!-- Search results will appear here -->
+          <div id="search-results" class="search-results"></div>
+
+        </a>
 
         <div class="header-user-actions">
 
-          <button class="action-btn">
+          <a href="coming soon.html" class="action-btn">
             <ion-icon name="person-outline"></ion-icon>
-          </button>
+          </a>
 
-          <button class="action-btn">
+          <a href="coming soon.html"  class="action-btn">
             <ion-icon name="heart-outline"></ion-icon>
             <span class="count">0</span>
-          </button>
+          </a>
 
           <a href="cart.html" class="action-btn">
             <ion-icon name="bag-handle-outline"></ion-icon>
@@ -221,6 +320,8 @@
         </div>
 
       </div>
+
+    </div>
 
     </div>
 
@@ -1805,7 +1906,6 @@
       <div class="container">
 
         <div class="testimonials-box">
-
           <!--
             - TESTIMONIALS
           -->
@@ -1816,17 +1916,14 @@
 
             <div class="testimonial-card">
 
-              <img src="./assets/images/testimonial-1.jpg" alt="alan doe" class="testimonial-banner" width="80" height="80">
+              <img src="./assets/images/testimonial-1.jpg" alt="Akash Gualti" class="testimonial-banner" width="80" height="80">
 
-              <p class="testimonial-name">Alan Doe</p>
+              <p class="testimonial-name">Akash Gualti</p>
 
               <p class="testimonial-title">CEO & Founder Invision</p>
 
-              <img src="./assets/images/icons/quotes.svg" alt="quotation" class="quotation-img" width="26">
-
               <p class="testimonial-desc">
-                Lorem ipsum dolor sit amet consectetur Lorem ipsum
-                dolor dolor sit amet.
+                 I love this website. The products are amazing and the service is top-notch. Highly recommend it to everyone looking for quality Indian products.
               </p>
 
             </div>
@@ -1841,19 +1938,15 @@
 
           <div class="cta-container">
 
-            <img src="./assets/images/cta-banner.jpg" alt="summer collection" class="cta-banner">
+            <!--you can copy the below code to your htm page-----------------------------begin--->
+            <!--change the width and height value as you want.--> 
+            <!-- Do change "index.htm" to your real html name of the flippingbook--> 
+              <iframe  style="width:100%;height: 100%"  src="https://online.fliphtml5.com/mmwly/pxsv/index.html"  
+                seamless="seamless" scrolling="no" frameborder="0"        
+                allowtransparency="true" allowfullscreen="true"></iframe>
 
-            <a href="#" class="cta-content">
+            <!--you can copy the above code to your htm page-----------------------------end--->  
 
-              <p class="discount">25% Discount</p>
-
-              <h2 class="cta-title">Summer collection</h2>
-
-              <p class="cta-text">Starting @ $10</p>
-
-              <button class="cta-btn">Shop now</button>
-
-            </a>
 
           </div>
 
@@ -1877,8 +1970,8 @@
 
                 <div class="service-content">
 
-                  <h3 class="service-title">Worldwide Delivery</h3>
-                  <p class="service-desc">For Order Over $100</p>
+                  <h3 class="service-title">For Worldwide Delivery</h3>
+                  <p class="service-desc">Contact us</p>
 
                 </div>
 
@@ -1893,7 +1986,6 @@
                 <div class="service-content">
               
                   <h3 class="service-title">Next Day delivery</h3>
-                  <p class="service-desc">UK Orders Only</p>
               
                 </div>
               
@@ -1907,8 +1999,8 @@
               
                 <div class="service-content">
               
-                  <h3 class="service-title">Best Online Support</h3>
-                  <p class="service-desc">Hours: 8AM - 11PM</p>
+                  <h3 class="service-title">Best Support</h3>
+                  <p class="service-desc">Hours: 11AM - 11PM</p>
               
                 </div>
               
@@ -1923,25 +2015,13 @@
                 <div class="service-content">
               
                   <h3 class="service-title">Return Policy</h3>
-                  <p class="service-desc">Easy & Free Return</p>
+                  <p class="service-desc">no Returns or Exchanges</p>
               
                 </div>
               
               </a>
-
-              <a href="#" class="service-item">
               
-                <div class="service-icon">
-                  <ion-icon name="ticket-outline"></ion-icon>
-                </div>
-              
-                <div class="service-content">
-              
-                  <h3 class="service-title">30% money back</h3>
-                  <p class="service-desc">For Order Over $100</p>
-              
-                </div>
-              
+                
               </a>
 
             </div>
