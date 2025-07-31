@@ -2973,7 +2973,7 @@ footer {
             border-radius: 20px;
   }
 
-  .desktop-navigation-menu { display: none; }
+  .desktop-navigation-menu { display: block; }
 
   .desktop-menu-category-list {
     position: relative;
