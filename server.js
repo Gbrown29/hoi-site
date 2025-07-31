@@ -92,7 +92,7 @@ const emailHtml = `
           item => `
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-            <img src='https://hoi-site.onrender.com/assets/images/${item.category}/${item.name}.png/' alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
+            <img src='https://hoi-site.onrender.com/assets/images/${item.category}/${item.name}.png' alt="${item.name}" style="max-width: 60px; border-radius: 4px;">
           </td>
           <td style="padding: 10px; border: 1px solid #ddd;">${item.name}</td>
           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${item.quantity}</td>
