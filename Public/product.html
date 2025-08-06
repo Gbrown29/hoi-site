@@ -250,6 +250,54 @@
   text-decoration: line-through;
 }
 
+/* header */
+
+.header-flex {
+  display: flex;
+  align-items: center; /* Vertically center logo, search, and icons */
+  justify-content: space-between; /* Spread out sections */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 20px; /* Space between logo, search, and icons */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between two logos */
+}
+
+.header-search-container {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-user-actions .action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 24px;
+}
+
+.header-user-actions .count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
 /* Search Results Dropdown */
 .search-results {
   position: absolute;
