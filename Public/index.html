@@ -178,16 +178,19 @@
 /* PRODUCT MINIMAL STYLES */
 /* ---------------------- */
 
+/* ---------------------- */
+/* PRODUCT MINIMAL DESKTOP */
+/* ---------------------- */
 .product-minimal {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
-  margin-bottom: 40px;
+  margin: 20px 0 40px;
 }
 
 .product-showcase {
   background: #fff;
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
 }
 
@@ -196,27 +199,16 @@
   margin-bottom: 10px;
 }
 
+/* Product wrapper */
 .showcase-wrapper {
-  display: flex;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 15px;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 10px;
 }
 
-.showcase-wrapper::-webkit-scrollbar {
-  height: 6px;
-}
-
-.showcase-wrapper::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
-}
-
-/* Product items inside scroll container */
 .showcase-wrapper > div {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  flex: unset !important;
+  max-width: 100%; /* Allow card to grow naturally */
 }
 
 /* ---------------------- */
@@ -243,6 +235,8 @@
 @media (max-width: 768px) {
   /* Product minimal stacks */
   .product-minimal {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
   }
 
@@ -251,10 +245,18 @@
     text-align: center;
   }
 
+  /* Mobile: horizontal swipe */
   .showcase-wrapper {
-    gap: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+  }
+
+  .showcase-wrapper > div {
+    flex: 0 0 auto;
+    min-width: 150px;
+    max-width: 200px;
   }
 
   /* Product grid adjusts to 2 columns or 1 column */
@@ -268,6 +270,7 @@
     font-size: 18px;
     text-align: center;
   }
+  
 }
 
 

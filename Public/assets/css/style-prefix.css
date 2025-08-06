@@ -1238,12 +1238,14 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  overflow-x: auto;
+  overflow-x: visible;
   overscroll-behavior-inline: contain;
   -webkit-scroll-snap-type: inline mandatory;
       -ms-scroll-snap-type: inline mandatory;
@@ -1262,7 +1264,7 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
+  display: block;
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
@@ -7099,4 +7101,39 @@ ol {
 
 
 
+
 }
+
+
+
+/* ---------- Desktop Grid for Product-Minimal ---------- */
+@media (min-width: 1024px) {
+  .product-minimal .showcase-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+    overflow-x: visible !important;
+  }
+
+  .product-minimal .showcase-container {
+    min-width: unset !important;
+    width: 100%;
+  }
+
+  .product-minimal .showcase {
+    display: block !important;
+    text-align: center;
+    width: 100%;
+  }
+
+  .product-minimal .showcase-content {
+    width: 100% !important;
+  }
+
+  .product-minimal .showcase:not(:last-child) {
+    margin-bottom: 0 !important;
+  }
+}
+
+
