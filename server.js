@@ -8,6 +8,8 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
 
+const reviewsFile = path.join(__dirname, 'reviews_data.json');
+
 require("dotenv").config();
 
 
@@ -15,6 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static("Public"));
+app.use(express.json());
 
 let orderCount = 1;
 console.log("Email:", process.env.OUTLOOK_EMAIL);
@@ -127,6 +130,44 @@ await transporter.sendMail({
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+// Get reviews for a product
+app.get('/api/reviews', (req, res) => {
+  const product = req.query.product;
+  if (!product) return res.status(400).json({ error: 'Product name required' });
+
+  fs.readFile(reviewsFile, 'utf8', (err, data) => {
+    if (err) return res.status(500).json({ error: 'Unable to read reviews' });
+
+    const allReviews = JSON.parse(data);
+    const reviews = allReviews[product] || [];
+    res.json(reviews);
+  });
+});
+
+
+//Submit a new review
+app.post('/api/reviews', (req, res) => {
+  const { product, name, review } = req.body;
+  if (!product || !name || !review) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  fs.readFile(reviewsFile, 'utf8', (err, data) => {
+    if (err) return res.status(500).json({ error: 'Unable to read reviews file' });
+
+    const allReviews = JSON.parse(data);
+    if (!allReviews[product]) allReviews[product] = [];
+    allReviews[product].push({ name, review });
+
+    fs.writeFile(reviewsFile, JSON.stringify(allReviews, null, 2), (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to save review' });
+      res.json({ success: true });
+    });
+  });
+});
+
+
 
 
 const PORT = process.env.PORT || 5000;

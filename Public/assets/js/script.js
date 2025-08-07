@@ -354,6 +354,71 @@ document.addEventListener("DOMContentLoaded", () => {
           // Description (custom or generic)
           document.getElementById("product-description").textContent =
             `${product.PRODUCT} is a premium quality product sourced carefully for the best taste and freshness.`;
+          
+          // Long Product Description
+          const longDescriptionElement = document.getElementById("product-long-description");
+          if (product.PRODUCT_DESCRIPTION) {
+            longDescriptionElement.textContent = product.PRODUCT_DESCRIPTION;
+          } else {
+            longDescriptionElement.textContent = "No detailed description available for this product.";
+          }
+          
+          // Additional Information
+          const additionalInfoElement = document.getElementById("product-additional-info");
+          additionalInfoElement.innerHTML = ""; // Clear previous info
+          
+          if (product.ADDITIONAL_INFO) {
+            Object.entries(product.ADDITIONAL_INFO).forEach(([key, value]) => {
+              const li = document.createElement("li");
+              li.innerHTML = `<b>${key}:</b> ${value}`;
+              additionalInfoElement.appendChild(li);
+            });
+          } else {
+             additionalInfoElement.innerHTML = "<li>No additional information available.</li>";
+            }
+
+           // ---------- CUSTOMER REVIEWS ----------
+           // Function to display reviews dynamically
+           function displayReviews(currentProductName) {
+            const reviewContainer = document.getElementById("review-list");
+            if (!reviewContainer) {
+              console.error("Review container not found.");
+              return;
+            };
+
+           reviewContainer.innerHTML = "<p>Loading reviews...</p>";
+          
+
+
+           fetch(`/api/reviews?product=${encodeURIComponent(product.PRODUCT)}`)
+           .then(res => res.json())
+           .then(reviews => {
+            const container = document.getElementById("review-list");
+            container.innerHTML = ""; // Clear previous
+
+           if (reviews.length === 0) {
+           container.innerHTML = "<p>No reviews yet. Be the first!</p>";
+          } else {
+            reviews.forEach(r => {
+              const div = document.createElement("div");
+              div.className = "single-review";
+              div.innerHTML = `<strong>${r.name}</strong><p>${r.review}</p>`;
+              container.appendChild(div);
+            });
+          }
+  })
+  .catch(err => {
+    console.error("Failed to load reviews:", err);
+    reviewContainer.innerHTML = "<p>Error loading reviews.</p>";
+  });
+    }
+
+          // Initial call to display reviews
+          displayReviews(currentProductName);
+        
+          
+
+ 
 
           // Load related products
           const relatedContainer = document.getElementById("related-products-container");
@@ -755,6 +820,52 @@ document.addEventListener("DOMContentLoaded", () => {
     showResults(query);
   });
 });
+
+
+
+// Make submitReview globally accessible from HTML
+const urlParams = new URLSearchParams(window.location.search);
+const currentProductName = decodeURIComponent(urlParams.get('product') || "").trim();
+
+window.submitReview = function () {
+  const nameInput = document.getElementById("reviewer-name");
+  const reviewInput = document.getElementById("review-text");
+
+  if (!nameInput || !reviewInput) {
+    alert("Review form elements not found.");
+    return;
+  }
+
+  const name = nameInput.value.trim();
+  const review = reviewInput.value.trim();
+
+  if (!name || !review) {
+    alert("Please enter both name and review.");
+    return;
+  }
+
+  fetch("/api/reviews", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product: currentProductName,
+      name,
+      review
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Thanks for your review!");
+        location.reload();
+      } else {
+        alert("Failed to submit review.");
+      }
+    })
+    .catch(err => {
+      console.error("Error submitting review:", err);
+    });
+};
 
 
 
