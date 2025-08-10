@@ -146,22 +146,34 @@ app.get('/api/reviews', (req, res) => {
 });
 
 
-//Submit a new review
+// Submit a new review
 app.post('/api/reviews', (req, res) => {
-  const { product, name, review } = req.body;
-  if (!product || !name || !review) {
+  const { product, name, review, rating } = req.body;
+
+  const numericRating = Number(rating);
+  if (!product || !name || !review || !Number.isFinite(numericRating)) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
+  // Clamp rating to 1-5
+  const safeRating = Math.max(1, Math.min(5, Math.round(numericRating)));
+
   fs.readFile(reviewsFile, 'utf8', (err, data) => {
-    if (err) return res.status(500).json({ error: 'Unable to read reviews file' });
+    // If file missing, start with empty object
+    const initialData = err ? '{}' : data;
 
-    const allReviews = JSON.parse(data);
+    let allReviews = {};
+    try {
+      allReviews = JSON.parse(initialData || '{}');
+    } catch (e) {
+      allReviews = {};
+    }
+
     if (!allReviews[product]) allReviews[product] = [];
-    allReviews[product].push({ name, review });
+    allReviews[product].push({ name, review, rating: safeRating, createdAt: new Date().toISOString() });
 
-    fs.writeFile(reviewsFile, JSON.stringify(allReviews, null, 2), (err) => {
-      if (err) return res.status(500).json({ error: 'Failed to save review' });
+    fs.writeFile(reviewsFile, JSON.stringify(allReviews, null, 2), (writeErr) => {
+      if (writeErr) return res.status(500).json({ error: 'Failed to save review' });
       res.json({ success: true });
     });
   });
@@ -169,6 +181,24 @@ app.post('/api/reviews', (req, res) => {
 
 
 
-
+const os = require('os');
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+}
+
+const localIP = getLocalIP();
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Server running on http://${localIP}:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);})
+

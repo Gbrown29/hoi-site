@@ -378,43 +378,191 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
            // ---------- CUSTOMER REVIEWS ----------
-           // Function to display reviews dynamically
-           function displayReviews(currentProductName) {
-            const reviewContainer = document.getElementById("review-list");
-            if (!reviewContainer) {
-              console.error("Review container not found.");
-              return;
-            };
 
-           reviewContainer.innerHTML = "<p>Loading reviews...</p>";
-          
+          let selectedRating = 0;
+let currentProductName = "";
 
+// Star rating setup
+function setupStarRating() {
+  const stars = document.querySelectorAll(".star-rating .star");
 
-           fetch(`/api/reviews?product=${encodeURIComponent(product.PRODUCT)}`)
-           .then(res => res.json())
-           .then(reviews => {
-            const container = document.getElementById("review-list");
-            container.innerHTML = ""; // Clear previous
+  function paintSelected(n) {
+    stars.forEach((s, i) => s.classList.toggle("selected", i < n));
+  }
+  function clearHovered() {
+    stars.forEach(s => s.classList.remove("hovered"));
+  }
+  function paintHovered(n) {
+    clearHovered();
+    stars.forEach((s, i) => s.classList.toggle("hovered", i < n));
+  }
 
-           if (reviews.length === 0) {
-           container.innerHTML = "<p>No reviews yet. Be the first!</p>";
-          } else {
-            reviews.forEach(r => {
-              const div = document.createElement("div");
-              div.className = "single-review";
-              div.innerHTML = `<strong>${r.name}</strong><p>${r.review}</p>`;
-              container.appendChild(div);
-            });
-          }
-  })
-  .catch(err => {
-    console.error("Failed to load reviews:", err);
-    reviewContainer.innerHTML = "<p>Error loading reviews.</p>";
+  stars.forEach((star, index) => {
+    star.addEventListener("mouseenter", () => paintHovered(index + 1));
+    star.addEventListener("mouseleave", () => clearHovered());
+    star.addEventListener("click", () => {
+      selectedRating = index + 1;
+      paintSelected(selectedRating);
+
+      // Update submit button enabled state
+      const submitBtn = document.getElementById("submit-review-btn");
+      if (submitBtn) {
+        const name = (document.getElementById("reviewer-name")?.value || "").trim();
+        const review = (document.getElementById("review-text")?.value || "").trim();
+        submitBtn.disabled = !(name.length >= 2 && review.length >= 10 && selectedRating > 0);
+      }
+    });
   });
-    }
+}
 
-          // Initial call to display reviews
-          displayReviews(currentProductName);
+// Display reviews for current product
+function displayReviews(product) {
+  fetch(`/api/reviews?product=${encodeURIComponent(product)}`)
+    .then(res => res.json())
+    .then(reviews => {
+      const container = document.getElementById("review-list");
+      container.innerHTML = "";
+
+      // Sorting
+      const sortSelect = document.getElementById("review-sort");
+      const sort = (sortSelect?.value || "newest");
+      const withDates = reviews.map(r => ({ ...r, createdAt: r.createdAt || null }));
+      let sorted = withDates.slice();
+      if (sort === "highest") {
+        sorted.sort((a,b) => (Number(b.rating)||0) - (Number(a.rating)||0));
+      } else if (sort === "lowest") {
+        sorted.sort((a,b) => (Number(a.rating)||0) - (Number(b.rating)||0));
+      } else if (sort === "oldest") {
+        sorted.sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
+      } else { // newest
+        sorted.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+      }
+
+      // Summary (average + count)
+      const summaryEl = document.getElementById("product-rating-summary");
+      const count = sorted.length;
+      if (count === 0) {
+        if (summaryEl) summaryEl.innerHTML = "";
+        container.innerHTML = "<p>No reviews yet.</p>";
+        return;
+      }
+
+      const avg = sorted.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / count;
+      const rounded = Math.round(avg);
+      const starStr = "★".repeat(rounded) + "☆".repeat(5 - rounded);
+      if (summaryEl) {
+        summaryEl.innerHTML = `<span class=\"stars\">${starStr}</span><span>(${count} review${count>1?"s":""})</span>`;
+      }
+
+      // Render
+      sorted.forEach(r => {
+        const reviewEl = document.createElement("div");
+        reviewEl.classList.add("review");
+
+        const stars = "★".repeat(r.rating || 0) + "☆".repeat(5 - (r.rating || 0));
+        const dateStr = r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "";
+        reviewEl.innerHTML = `
+          <strong>${r.name}</strong> <small>${dateStr}</small>
+          <div class="stars">${stars}</div>
+          <p>${r.review}</p>
+        `;
+        container.appendChild(reviewEl);
+      });
+    })
+    .catch(err => {
+      console.error("Error loading reviews:", err);
+    });
+}
+
+// Submit review
+window.submitReview = function () {
+  const nameInput = document.getElementById("reviewer-name");
+  const reviewInput = document.getElementById("review-text");
+
+  if (!nameInput || !reviewInput) {
+    alert("Review form not found.");
+    return;
+  }
+
+  const name = nameInput.value.trim();
+  const review = reviewInput.value.trim();
+
+  if (!name || !review || selectedRating === 0) {
+    alert("Please enter name, review, and select a star rating.");
+    return;
+  }
+
+  fetch("/api/reviews", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product: currentProductName,
+      name,
+      review,
+      rating: selectedRating
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Thanks for your review!");
+        location.reload();
+      } else {
+        alert("Failed to submit review.");
+      }
+    })
+    .catch(err => {
+      console.error("Error submitting review:", err);
+    });
+};
+
+// Initialize reviews UI (run now; we are already inside a DOMContentLoaded)
+const urlParams = new URLSearchParams(window.location.search);
+currentProductName = decodeURIComponent(urlParams.get("product") || "").trim();
+
+// Live character counter and validation
+const nameInput = document.getElementById("reviewer-name");
+const reviewInput = document.getElementById("review-text");
+const nameMsg = document.getElementById("name-validation");
+const reviewMsg = document.getElementById("review-validation");
+const charCount = document.getElementById("char-count");
+const submitBtn = document.getElementById("submit-review-btn");
+const sortSelect = document.getElementById("review-sort");
+
+function validate() {
+  let ok = true;
+  if (nameInput) {
+    const v = nameInput.value.trim();
+    if (v.length < 2) { nameMsg.textContent = "Name must be at least 2 characters."; ok = false; }
+    else if (!/^[a-zA-Z0-9 .,'-]{2,50}$/.test(v)) { nameMsg.textContent = "Only letters, numbers, spaces and .,'- allowed."; ok = false; }
+    else { nameMsg.textContent = ""; }
+  }
+  if (reviewInput) {
+    const v = reviewInput.value.trim();
+    if (charCount) charCount.textContent = String(v.length);
+    if (v.length < 10) { reviewMsg.textContent = "Review must be at least 10 characters."; ok = false; }
+    else if (/(https?:\/\/|\bviagra\b|\bcasino\b)/i.test(v)) { reviewMsg.textContent = "Please remove links or disallowed terms."; ok = false; }
+    else { reviewMsg.textContent = ""; }
+  }
+  if (submitBtn) submitBtn.disabled = !ok || selectedRating === 0;
+}
+
+if (nameInput) nameInput.addEventListener("input", validate);
+if (reviewInput) reviewInput.addEventListener("input", validate);
+
+if (sortSelect) {
+  sortSelect.addEventListener("change", () => {
+    if (currentProductName) displayReviews(currentProductName);
+  });
+}
+
+if (currentProductName) {
+  displayReviews(currentProductName);
+}
+
+setupStarRating();
+validate();
+
         
           
 
@@ -475,6 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(error => console.error("Error loading product data:", error));
   }
 });
+
 
 // CATEGORY PAGE PRODUCT GRID LOADER
 document.addEventListener("DOMContentLoaded", () => {
@@ -823,49 +972,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Make submitReview globally accessible from HTML
-const urlParams = new URLSearchParams(window.location.search);
-const currentProductName = decodeURIComponent(urlParams.get('product') || "").trim();
-
-window.submitReview = function () {
-  const nameInput = document.getElementById("reviewer-name");
-  const reviewInput = document.getElementById("review-text");
-
-  if (!nameInput || !reviewInput) {
-    alert("Review form elements not found.");
-    return;
-  }
-
-  const name = nameInput.value.trim();
-  const review = reviewInput.value.trim();
-
-  if (!name || !review) {
-    alert("Please enter both name and review.");
-    return;
-  }
-
-  fetch("/api/reviews", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      product: currentProductName,
-      name,
-      review
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Thanks for your review!");
-        location.reload();
-      } else {
-        alert("Failed to submit review.");
-      }
-    })
-    .catch(err => {
-      console.error("Error submitting review:", err);
-    });
-};
 
 
 

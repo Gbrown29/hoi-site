@@ -333,10 +333,20 @@
   background: #f5f5f5;
 }
 
+  /* Rating summary near product title */
+  .product-rating-summary { margin-bottom: 8px; color: #333; font-weight: 600; }
+  .product-rating-summary .stars { color: gold; margin-right: 8px; }
+
+  .review-controls { display:flex; align-items:center; gap:8px; margin: 10px 0 16px; }
+  .validation-message { color:#e63946; font-size: 0.9rem; min-height: 1em; }
+  .character-count { color:#666; font-size: 0.85rem; text-align: right; }
+  .review-form .form-group { margin-bottom: 12px; }
+  #submit-review-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
 /* ---------------------- */
 /* RESPONSIVE MOBILE FIX  */
 /* ---------------------- */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Stack header sections */
   .header-flex {
     flex-wrap: wrap; /* Allow multi-line */
@@ -373,6 +383,52 @@
   .desktop-navigation-menu {
     display: none;
   }
+
+/*stars rating */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.5rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star-rating span:hover,
+.star-rating span.hovered,
+.star-rating span.selected {
+  color: gold;
+}
+.review-form{
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+
+.review-input,
+.review-textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.submit-review-btn {
+  background: #e63946;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.single-review {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 }
 
 
@@ -381,7 +437,7 @@
 
 </style>
 
-    
+
 
 </head>
 
@@ -395,7 +451,7 @@
 <!--
     - MODAL
 
-  
+
 
   <div class="modal" data-modal>
 
@@ -436,12 +492,12 @@
     </div>
 
   </div>
-    
 
 
-  
+
+
     - NOTIFICATION TOAST
-  
+
 
   <div class="notification-toast" data-toast>
 
@@ -595,7 +651,7 @@
             <a href="index.html" class="menu-title">Home</a>
           </li>
 
-          
+
 
 
           <li class="menu-category">
@@ -626,7 +682,7 @@
                <li class="dropdown-item">
                 <a href="product.html?product=Exotic Bites Coconut Milk 400Ml">Coconut Milk</a>
               </li>
-              
+
 
             </ul>
           </li>
@@ -696,9 +752,9 @@
                 <a href="product.html?product=Sosyo Lemee 250ml Can">Lemme</a>
               </li>
 
-              
 
-            
+
+
 
             </ul>
           </li>
@@ -723,7 +779,7 @@
 
          <a href="index.html" class="action-btn">
             <ion-icon name="home-outline"></ion-icon>
-          </a>  
+          </a>
 
       <button href="coming soon.html"  class="action-btn">
         <ion-icon name="heart-outline"></ion-icon>
@@ -840,7 +896,7 @@
 
         </li>
 
-       
+
 
 
       </ul>
@@ -930,7 +986,7 @@
 
   </header>
 
-  
+
 
 
 
@@ -1041,6 +1097,8 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="product__details__text">
+                <div id="product-rating-summary" class="product-rating-summary" aria-label="Average rating"></div>
+
                 <h3 id="product-name"></h3>
                 <div class="product__details__price" id="product-price"></div>
                 <p id="product-description"></p>
@@ -1085,15 +1143,48 @@
   <div class="tab-pane fade" id="tabs-3" role="tabpanel">
     <div class="tab-card">
   <h5 class="tab-card-title">Customer Reviews</h5>
-  <div id="review-list">
-    <p></p>
+
+  <!-- Review sorting controls -->
+  <div class="review-controls">
+    <label for="review-sort">Sort by:</label>
+    <select id="review-sort">
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="highest">Highest Rated</option>
+      <option value="lowest">Lowest Rated</option>
+    </select>
   </div>
 
-  <h5 class="mt-3">Leave a Review</h5>
-  <input type="text" id="reviewer-name" placeholder="Your Name" class="review-input"><br><br>
-  <textarea id="review-text" placeholder="Write your review..." class="review-textarea"></textarea><br><br>
-  <button onclick="submitReview()" class="submit-review-btn">Submit Review</button>
-</div>
+  <div id="review-list"></div>
+  <button id="show-more-reviews" style="display:none; margin-top: 10px;">Show More</button>
+
+  <h3>Write a Review</h3>
+  <div class="review-form">
+    <div class="form-group">
+      <input type="text" id="reviewer-name" placeholder="Your Name" minlength="2" maxlength="50" required>
+      <div class="validation-message" id="name-validation"></div>
+    </div>
+
+    <div class="form-group">
+      <textarea id="review-text" placeholder="Write your review (minimum 10 characters)..." minlength="10" maxlength="500" required></textarea>
+      <div class="validation-message" id="review-validation"></div>
+      <div class="character-count"><span id="char-count">0</span>/500</div>
+    </div>
+
+    <div class="form-group">
+      <label>Your Rating:</label>
+      <div class="star-rating" id="review-star-rating">
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
+      </div>
+      <div class="validation-message" id="rating-validation"></div>
+    </div>
+
+    <button id="submit-review-btn" onclick="submitReview()">Submit Review</button>
+  </div>
 
   </div>
 
@@ -1114,9 +1205,9 @@
         <div class="related-products-scroll" id="related-products-container"></div>
       </div>
     </section>
-         
 
-                
+
+
     <!-- Related Product Section End -->
 
 
@@ -1131,59 +1222,59 @@
 
 
         <ul class="footer-nav-list">
-        
+
           <li class="footer-nav-item">
             <h2 class="nav-title">Products</h2>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="category.html?category=Rice" class="footer-nav-link">Rice</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="category.html?category=Ambient Product" class="footer-nav-link">Ambient Products</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="category.html?category=Frozen" class="footer-nav-link">Frozen</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="category.html?category=Spices" class="footer-nav-link">Spices</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="category.html?category=Pulses" class="footer-nav-link">Pulses</a>
           </li>
-        
+
         </ul>
 
         <ul class="footer-nav-list">
-        
+
           <li class="footer-nav-item">
             <h2 class="nav-title">Our Company</h2>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="#" class="footer-nav-link">Delivery</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="#" class="footer-nav-link">Legal Notice</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="#" class="footer-nav-link">Terms and conditions</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="#" class="footer-nav-link">About us</a>
           </li>
-        
+
           <li class="footer-nav-item">
             <a href="#" class="footer-nav-link">Secure payment</a>
           </li>
-        
+
         </ul>
 
         <ul class="footer-nav-list">
@@ -1299,7 +1390,7 @@
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 
-  
+
 
 
 

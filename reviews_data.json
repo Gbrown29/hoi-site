@@ -3,6 +3,24 @@
     {
       "name": "s",
       "review": "s"
+    },
+    {
+      "name": "k",
+      "review": "k"
+    },
+    {
+      "name": "Alice smith",
+      "review": "Love this product, great flavor",
+      "rating": 5,
+      "createdAt": "2025-08-10T16:50:14.360Z"
+    }
+  ],
+  "Test Product": [
+    {
+      "name": "Alice",
+      "review": "Great item!",
+      "rating": 5,
+      "createdAt": "2025-08-10T16:46:24.812Z"
     }
   ]
 }
