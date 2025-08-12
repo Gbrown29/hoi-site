@@ -416,58 +416,134 @@ function setupStarRating() {
 }
 
 // Display reviews for current product
+let REVIEWS_STATE = { page: 1, pageSize: 10 };
+
+function renderHistogram(product) {
+  fetch(`/api/reviews/aggregate?product=${encodeURIComponent(product)}`)
+    .then(r => r.json())
+    .then(({ total, average, counts }) => {
+      const el = document.getElementById("rating-histogram");
+      const summaryEl = document.getElementById("product-rating-summary");
+      const inlineAvg = document.getElementById("rating-average-inline");
+      if (!el) return;
+      const avgRounded = Math.round(average || 0);
+      const starStr = "★".repeat(avgRounded) + "☆".repeat(5 - avgRounded);
+      const summaryText = `${(average||0).toFixed(1)} / 5 · ${total||0} review${(total||0)>1?"s":""}`;
+      if (summaryEl) summaryEl.innerHTML = `<span class=\"stars\">${starStr}</span><span>${summaryText}</span>`;
+      if (inlineAvg) inlineAvg.textContent = summaryText;
+
+      function row(label, count) {
+        const pct = total ? Math.round((count/total)*100) : 0;
+        return `<div class="hist-row"><div class="hist-label">${label}★</div><div class="hist-bar"><span style="width:${pct}%"></span></div><div class="hist-count">${count||0}</div></div>`;
+      }
+      el.innerHTML = row(5, counts[5]) + row(4, counts[4]) + row(3, counts[3]) + row(2, counts[2]) + row(1, counts[1]);
+
+      // Inject JSON-LD AggregateRating
+      const ld = document.getElementById('ld-aggregate');
+      const data = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": product,
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": (average||0).toFixed(1),
+          "reviewCount": total||0,
+          "bestRating": 5,
+          "worstRating": 1
+        }
+      };
+      const json = JSON.stringify(data);
+      if (ld) ld.textContent = json; else {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json'; s.id = 'ld-aggregate'; s.textContent = json;
+        document.head.appendChild(s);
+      }
+    })
+    .catch(console.error);
+}
+
 function displayReviews(product) {
-  fetch(`/api/reviews?product=${encodeURIComponent(product)}`)
+  const sortSelect = document.getElementById("review-sort");
+  const sort = (sortSelect?.value || "newest");
+  const { page, pageSize } = REVIEWS_STATE;
+  fetch(`/api/reviews?product=${encodeURIComponent(product)}&sort=${encodeURIComponent(sort)}&page=${page}&pageSize=${pageSize}`)
     .then(res => res.json())
-    .then(reviews => {
+    .then(({ items, total, page, pageSize }) => {
       const container = document.getElementById("review-list");
+      const info = document.getElementById("page-info");
+      const prev = document.getElementById("page-prev");
+      const next = document.getElementById("page-next");
       container.innerHTML = "";
 
-      // Sorting
-      const sortSelect = document.getElementById("review-sort");
-      const sort = (sortSelect?.value || "newest");
-      const withDates = reviews.map(r => ({ ...r, createdAt: r.createdAt || null }));
-      let sorted = withDates.slice();
-      if (sort === "highest") {
-        sorted.sort((a,b) => (Number(b.rating)||0) - (Number(a.rating)||0));
-      } else if (sort === "lowest") {
-        sorted.sort((a,b) => (Number(a.rating)||0) - (Number(b.rating)||0));
-      } else if (sort === "oldest") {
-        sorted.sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
-      } else { // newest
-        sorted.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
-      }
-
-      // Summary (average + count)
-      const summaryEl = document.getElementById("product-rating-summary");
-      const count = sorted.length;
-      if (count === 0) {
-        if (summaryEl) summaryEl.innerHTML = "";
+      if (!items || items.length === 0) {
         container.innerHTML = "<p>No reviews yet.</p>";
+        if (info) info.textContent = "";
+        renderHistogram(product);
         return;
       }
 
-      const avg = sorted.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / count;
-      const rounded = Math.round(avg);
-      const starStr = "★".repeat(rounded) + "☆".repeat(5 - rounded);
-      if (summaryEl) {
-        summaryEl.innerHTML = `<span class=\"stars\">${starStr}</span><span>(${count} review${count>1?"s":""})</span>`;
-      }
-
-      // Render
-      sorted.forEach(r => {
-        const reviewEl = document.createElement("div");
-        reviewEl.classList.add("review");
-
+      // Render list
+      items.forEach(r => {
+        const card = document.createElement("div");
+        card.className = 'review-card';
+        const initials = (r.name||' ').trim().split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();
         const stars = "★".repeat(r.rating || 0) + "☆".repeat(5 - (r.rating || 0));
         const dateStr = r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "";
-        reviewEl.innerHTML = `
-          <strong>${r.name}</strong> <small>${dateStr}</small>
-          <div class="stars">${stars}</div>
-          <p>${r.review}</p>
+        const verified = r.verified ? `<span class="badge">Verified Purchase</span>` : '';
+        const helpful = r.helpfulCount || 0;
+
+        card.innerHTML = `
+          <div class="header">
+            <div class="author">
+              <div class="avatar">${initials || 'U'}</div>
+              <div>
+                <div><strong>${r.name}</strong> <small>${dateStr}</small></div>
+                <div class="stars">${stars}</div>
+              </div>
+            </div>
+            <div class="badges">${verified}</div>
+          </div>
+          <div class="body"><p>${r.review}</p></div>
+          <div class="review-actions">
+            <button data-action="helpful" data-id="${r._id || r.id}">Helpful (${helpful})</button>
+            <button data-action="report" data-id="${r._id || r.id}">Report</button>
+          </div>
         `;
-        container.appendChild(reviewEl);
+        container.appendChild(card);
       });
+
+      // Wire actions
+      container.querySelectorAll('button[data-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const action = btn.getAttribute('data-action');
+          if (action === 'helpful') {
+            fetch(`/api/reviews/${id}/helpful`, { method:'POST' })
+              .then(r => r.json())
+              .then(d => { btn.textContent = `Helpful (${d.helpfulCount||0})`; })
+              .catch(console.error);
+          } else if (action === 'report') {
+            fetch(`/api/reviews/${id}/report`, { method:'POST' })
+              .then(() => { btn.textContent = 'Reported'; btn.disabled = true; })
+              .catch(console.error);
+          }
+        });
+      });
+
+      // Pagination
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      if (info) info.textContent = `Page ${page} of ${totalPages}`;
+      if (prev) {
+        prev.disabled = page <= 1;
+        prev.onclick = () => { REVIEWS_STATE.page = Math.max(1, page - 1); displayReviews(product); };
+      }
+      if (next) {
+        next.disabled = page >= totalPages;
+        next.onclick = () => { REVIEWS_STATE.page = Math.min(totalPages, page + 1); displayReviews(product); };
+      }
+
+      // Update histogram and summary to match latest counts
+      renderHistogram(product);
     })
     .catch(err => {
       console.error("Error loading reviews:", err);
@@ -477,6 +553,7 @@ function displayReviews(product) {
 // Submit review
 window.submitReview = function () {
   const nameInput = document.getElementById("reviewer-name");
+  const emailInput = document.getElementById("reviewer-email");
   const reviewInput = document.getElementById("review-text");
 
   if (!nameInput || !reviewInput) {
@@ -485,6 +562,7 @@ window.submitReview = function () {
   }
 
   const name = nameInput.value.trim();
+  const email = (emailInput?.value || '').trim();
   const review = reviewInput.value.trim();
 
   if (!name || !review || selectedRating === 0) {
@@ -498,6 +576,7 @@ window.submitReview = function () {
     body: JSON.stringify({
       product: currentProductName,
       name,
+      email,
       review,
       rating: selectedRating
     })
@@ -506,7 +585,9 @@ window.submitReview = function () {
     .then(data => {
       if (data.success) {
         alert("Thanks for your review!");
-        location.reload();
+        // Refresh list and histogram in place without reloading
+        REVIEWS_STATE.page = 1;
+        displayReviews(currentProductName);
       } else {
         alert("Failed to submit review.");
       }
