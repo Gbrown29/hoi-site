@@ -245,10 +245,10 @@ fetch('products_data.json')
       ambientContainer.appendChild(div);
     });
 
-     // Ambient
+     // frozen
     const frozenContainer = document.getElementById('frozen-container');
     const frozenProducts = products.filter(p => p.CATEGORY.toLowerCase().includes('frozen'));
-    ambientProducts.forEach(product => {
+    frozenProducts.forEach(product => {
       const fileName = "product.html?product=" + encodeURIComponent(product.PRODUCT);
       const folder = encodeURIComponent(product.CATEGORY.trim());
       const div = document.createElement('div');
