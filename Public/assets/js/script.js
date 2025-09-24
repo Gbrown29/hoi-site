@@ -245,10 +245,10 @@ fetch('products_data.json')
       ambientContainer.appendChild(div);
     });
 
-     // frozen
-    const frozenContainer = document.getElementById('frozen-container');
-    const frozenProducts = products.filter(p => p.CATEGORY.toLowerCase().includes('frozen'));
-    frozenProducts.forEach(product => {
+     // Samosa
+    const SamosaContainer = document.getElementById('samosa-container');
+    const SamosaProducts = products.filter(p => p.CATEGORY.toLowerCase().includes('samosa'));
+    SamosaProducts.forEach(product => {
       const fileName = "product.html?product=" + encodeURIComponent(product.PRODUCT);
       const folder = encodeURIComponent(product.CATEGORY.trim());
       const div = document.createElement('div');
@@ -268,7 +268,33 @@ fetch('products_data.json')
           </div>
         </div>
       `;
-      frozenContainer.appendChild(div);
+      SamosaContainer.appendChild(div);
+    });
+
+     // Desserts
+    const SweetsContainer = document.getElementById('Sweets-container');
+    const SweetsProducts = products.filter(p => p.CATEGORY.toLowerCase().includes('sweets'));
+    SweetsProducts.forEach(product => {
+      const fileName = "product.html?product=" + encodeURIComponent(product.PRODUCT);
+      const folder = encodeURIComponent(product.CATEGORY.trim());
+      const div = document.createElement('div');
+      div.className = 'showcase';
+      div.innerHTML = `
+        <a href="${fileName}" class="showcase-img-box">
+          <img src="./assets/images/${folder}/${encodeURIComponent(product.PRODUCT)}.png" alt="${product.PRODUCT}" class="showcase-img" width="70">
+        </a>
+        <div class="showcase-content">
+          <a href="${fileName}">
+            <h4 class="showcase-title">${product.PRODUCT}</h4>
+          </a>
+          <a href="#" class="showcase-category">${product.CATEGORY}</a>
+          <div class="price-box">
+            <p class="price">$${parseFloat(product['SELLING PRICE']).toFixed(2)}</p>
+            <del>$${(parseFloat(product['SELLING PRICE']) * 1.25).toFixed(2)}</del>
+          </div>
+        </div>
+      `;
+      SweetsContainer.appendChild(div);
     });
   })
   .catch(error => console.error('Error loading products:', error));
